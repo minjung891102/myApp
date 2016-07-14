@@ -1,9 +1,14 @@
+// import modules
+var express        = require('express');
+var app            = express();
+var path           = require('path');
+var mongoose       = require('mongoose');
+var session        = require('express-session');
+var flash          = require('connect-flash');
+var bodyParser     = require('body-parser');
+var methodOverride = require('method-override');
 
-var express = require('express');
-var path = require('path');
-var app = express();
-var mongoose = require('mongoose');
-
+// database
 mongoose.connect(process.env.MONGOOSE_DB);
 var db = mongoose.connection;
 db.once("open", function (){
@@ -13,65 +18,32 @@ db.on("error", function (error) {
   console.log("DB ERROR : ", err);
 });
 
-var dataSchema = mongoose.Schema({
-  name:String,
-  count:Number
-});
-var Data = mongoose.model('data', dataSchema);
-Data.findOne({name:"myData"}, function(err,data) {
-  if(err) return console.log("Data ERROR : ", err);
-  if(!data) {
-    Data.create({name:"myData",count:0}, function (err,data) {
-      if(err) return console.log("Data ERROR : ", err);
-      console.log("Counter initialized : ", data);
-    });
-  }
-});
-
+// view engine
 app.set("view engine", 'ejs');
+
+// middlewares
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(bodyParser.json()); //다른프로그램 -> json 으로 데이타전송 할 경우 받는 body parser
+app.use(bodyParser.urlencoded({extended:true})); //웹사이트 -> json 으로 데이타전송 할 경우 받는 body parser
+app.use(methodOverride("_method"));
+app.use(flash());
+app.use(session({
+  secret:'MySecret',
+  resave: true,
+  saveUninitialized: true
+}));
 
-app.get('/', function (req,res) {
-  Data.findOne({name:"myData"}, function(err,data) {
-    if(err) return console.log("Data ERROR : ", err);
-    data.count++;
-    data.save(function (err) {
-      if(err) return console.log("Data ERROR : ", err);
-      res.render('my_first_ejs', data);
-    });
-  });
-});
-app.get('/reset', function (req,res) {
-  setCounter(res, 0);
-});
-app.get('/set/count', function (req,res) {
-  if(req.query.count) setCounter(res,req.query.count);
-});
-app.get('/set/:num', function (req,res) {
-  if(req.params.num) setCounter(res, req.params.num);
-  else getCounter(res);
-});
+// passport
+var passport = require('./config/passport');
+app.use(passport.initialize());
+app.use(passport.session());
 
-function setCounter(res, num) {
-  console.log("setCounter");
-  Data.findOne({name:"myData"}, function (err,data) {
-    if(err) return console.log("Data ERROR : ", err);
-    data.count = num;
-    data.save(function(err) {
-      if(err) return console.log("Data ERROR : ", err);
-      res.render('my_first_ejs', data);
-    });
-  });
-}
+// routes
+app.use('/', require('./routes/home'));
+app.use('/users', require('./routes/users'));
+app.use('/posts', require('./routes/posts'));
 
-function getCounter() {
-  console.log("getCounter");
-  Data.findOne({name:"myData"}, function(err,data) {
-    if(err) return console.log("Data ERROR : ", err);
-    res.render('my_first_ejs', data);
-  });
-}
-
-app.listen(3000, function(){
+// start server
+app.listen(3000, function() {
   console.log('Server On!');
 });

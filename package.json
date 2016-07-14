@@ -9,8 +9,16 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "async": "^2.0.0-rc.6",
+    "bcrypt-nodejs": "0.0.3",
+    "body-parser": "^1.15.2",
+    "connect-flash": "^0.1.1",
     "ejs": "^2.4.2",
     "express": "^4.14.0",
-    "mongoose": "^4.5.3"
+    "express-session": "^1.14.0",
+    "method-override": "^2.3.6",
+    "mongoose": "^4.5.3",
+    "passport": "^0.3.2",
+    "passport-local": "^1.0.0"
   }
 }
