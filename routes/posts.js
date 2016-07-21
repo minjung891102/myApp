@@ -31,7 +31,7 @@ router.get('/:id/edit', isLoggedIn, function(req,res) {
   Post.findById(req.params.id, function(err,post) {
     if(err) return res.json({success:false, message:err});
     if(!req.user._id.equals(post.author)) return res.json({success:false, message:"Unautherized Attempt"});
-    res.render("posts/edit", {post:post});
+    res.render("posts/edit", {post:post, user:req.user});
   });
 }); //edit
 router.put('/:id', isLoggedIn, function(req,res) {
