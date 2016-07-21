@@ -8,7 +8,7 @@ var Post     = require('../models/Post');
 router.get('/', function(req,res) {
  Post.find({}).populate("author").sort('-createdAt').exec(function (err,post) {
    if(err) return res.json({success:false, message:err});
-   res.render("posts/index", {post:post, user:req.user});
+   res.render("posts/index", {post:post, user:req.user, postsMessage:req.flash("postsMessage")[0]});
  });
 }); // index
 router.get('/new', isLoggedIn, function(req,res) {
@@ -57,6 +57,7 @@ function isLoggedIn(req,res,next) {
   if(req.isAuthenticated()) {
     return next();
   }
+  req.flash("postsMessage","Please login first.");
   res.redirect('/');
 }
 
