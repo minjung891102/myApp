@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
-    <% include ../partials/head %>
+  <% include ../partials/head %>
   </head>
   <body>
     <header>
@@ -15,35 +15,37 @@
       <div class="show">
         <div class="buttons floats">
           <% if(user && user.equals(post.author._id)) { %>
+            <!-- Delete button here -->
             <form class="float_right" action="/posts/<%=post._id%>?_method=delete" method="post">
-              <button type="button" onclick="confirm('Your post will be deleted')?this.parentElement.submit():null;">Delete</button>
+              <button type="submit">Delete</button>
             </form>
             <button class="float_right" onclick="location.href='/posts/<%=post._id%>/edit'">Edit</button>
           <% } %>
           <button class="float_left" onclick="location.href='/posts'">Back</button>
         </div>
         <h3><%= post.title %></h3>
+
         <div class="content floats">
           <div class="info float_right">
             <div>
               Author: <%= post.author.nickname %>
             </div>
-            <div class="timestamp"><span>Created:</span>
-              <%= post.getCreatedTime() %>, <%= post.getCreatedDate() %>
+            <div class="timestamp"><span>Created :</span>
+              <%= post.createdAt.toLocaleDateString() %>, <%= post.createdAt.toLocaleTimeString() %>
             </div>
             <% if(post.updatedAt) { %>
-              <div class="timestamp"><span>Updated:</span>
-                <%= post.getCreatedTime() %>, <%= post.getCreatedDate() %>
+              <div class="timestamp"><span>Updated :</span>
+                <%= post.updatedAt.toLocaleDateString() %>, <%= post.updatedAt.toLocaleTimeString() %>
               </div>
             <% } %>
           </div>
-          <div class="body"><%= post.body %></div>
-        </div>
+        <div class="body"><%= post.body %></div>
       </div>
+    </div>
 
-      <!-- main end -->
+    <!-- main end -->
     </div><!--posts end -->
-    
+
     <footer>
       <% include ../partials/footer %>
     </footer>
