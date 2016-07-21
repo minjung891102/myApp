@@ -31,11 +31,11 @@
               Author: <%= post.author.nickname %>
             </div>
             <div class="timestamp"><span>Created :</span>
-              <%= post.createdAt.toLocaleDateString() %>, <%= post.createdAt.toLocaleTimeString() %>
+              <%= post.getCreatedTime() %>, <%= post.getCreatedDate() %>
             </div>
             <% if(post.updatedAt) { %>
               <div class="timestamp"><span>Updated :</span>
-                <%= post.updatedAt.toLocaleDateString() %>, <%= post.updatedAt.toLocaleTimeString() %>
+                <%= post.getCreatedTime() %>, <%= post.getCreatedDate() %>
               </div>
             <% } %>
           </div>
