@@ -43,7 +43,7 @@
             <% post.forEach(function(post){ %>
               <tr onclick="window.location = '/posts/<%= post._id %>'">
                 <td><%= post.title %></td>
-                <td><%= post.getCreatedDate() %></td>
+                <td><%= post.createdAt.toLocaleDateString() %></td>
                 <td><%= post.author.nickname %></td>
               </tr>
             <% }) %>
