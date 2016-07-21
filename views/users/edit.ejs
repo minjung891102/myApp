@@ -25,8 +25,9 @@
             </div>
             <div class="inputs">
               <div class="floats">
-                <label>Email* <span id="email_error" class="error_message"><%=emailError?emailError:""%></span></label>
+                <label>Email*</label>
                 <input type="text" id="email" name="user[email]" value="<%=formData?formData.email:(user?user.email:"")%>">
+                <div id="cvErrEmail" class="message"><%= emailError?emailError:"" %></div>
               </div>
             </div>
             <div class="floats">
