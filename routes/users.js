@@ -53,9 +53,9 @@ router.put('/:id', isLoggedIn, checkUserRegValidation, function(req,res) {
         //   findByIdAndupdate는 user.save()를 사용하지 않기 때문에, user 개체에 직접 newPassword를 입력해 주고 user.save() 사용
         //2. user.password = req.body.user.newPassword;
         //   user.save();
-        //   위의 코드의 경우 newPassword가 있는 경우에 user.save()가 호출되고 req.body.user.password의 값이 다시 User.findByIdAndUpdate에서 사용되므로 다음번 로그인 시에 문제발생
+        //  위의 코드의 경우 newPassword가 있는 경우에 user.save()가 호출되고 req.body.user.password의 값이 다시 User.findByIdAndUpdate에서 사용되므로 다음번 로그인 시에 문제발생
         req.body.user.password = user.hash(req.body.user.newPassword);
-        // /req.body.user.newPassword가 있는 경우에는 req.body.user.newPassword를 hash해서 넣어주고, 없는 경우는 req.body.user.password를 지웁니다.
+        // req.body.user.newPassword가 있는 경우에는 req.body.user.newPassword를 hash해서 넣어주고, 없는 경우는 req.body.user.password를 지웁니다.
       } else {
         delete req.body.user.password;
       }
