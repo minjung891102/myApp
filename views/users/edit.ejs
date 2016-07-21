@@ -36,11 +36,12 @@
             </div>
             <div class="floats">
               <label>New Password</label>
-              <input type="password" id="new_password" name="user[newPassword]" value="">
+              <input class="cvMatch" type="password" name="user[newPassword]" cvMatW="#cvMatWPassword" cvMatErrMsg="Password confirmation doesn't match." cvMatErrTo="#cvErrPasswordConfirmation" value="">
             </div>
             <div class="floats">
-              <label>Password Confirmation <span id="password_confirmation_error" class="error_message"></span></label>
-              <input type="password" id="password_confirmation" name="user[passwordConfirmation]" value="">
+              <label>Password Confirmation</label>
+              <input id="cvMatWPassword" type="password" name="user[passwordConfirmation]"value="">
+              <div id="cvErrPasswordConfirmation" class="message"></div>
             </div>
             <p><small>*Required</small></p>
           </div>
