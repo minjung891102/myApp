@@ -21,18 +21,18 @@
             <div class="floats">
               <label>Current Password* <span id="password_error" class="error_message"><%= passwordError?passwordError:""%></span></label>
               <input type="password" id="password" name="user[password]" value="">
-              </div>
             </div>
-            <div class="inputs">
-              <div class="floats">
-                <label>Email*</label>
-                <input type="text" id="email" name="user[email]" value="<%=formData?formData.email:(user?user.email:"")%>">
-                <div id="cvErrEmail" class="message"><%= emailError?emailError:"" %></div>
-              </div>
+          </div>
+          <div class="inputs">
+            <div class="floats">
+              <label>Email*</label>
+              <input type="text" id="email" name="user[email]" value="<%=formData?formData.email:(user?user.email:"")%>">
+              <div id="cvErrEmail" class="message"><%= emailError?emailError:"" %></div>
             </div>
             <div class="floats">
-              <label>Nickname* <span id="nickname_error" class="error_message"><%=nicknameError?nicknameError:""%></span></label>
-              <input type="text" id="nickname" name="user[nickname]" value="<%=formData?formData.nickname:(user?user.nickname:"")%>">
+              <label>Nickname*</label>
+              <input class="cvRequired" type="text" name="user[nickname]" cvRqErrMsg="Nickname is required." cvRqErrTo="#cvErrNickname" value="<%= formData?formData.nickname:(user?user.nickname:"") %>">
+              <div id="cvErrNickname" class="message"><%= nicknameError?nicknameError:"" %></div>
             </div>
             <div class="floats">
               <label>New Password</label>
@@ -50,9 +50,6 @@
           </div>
         </form>
       </div>
-
-      <!-- Javascript -->
-      <script type="text/javascript" src="/js/useform.js"></script>
 
       <!-- main end -->
     </div><!--users end -->
