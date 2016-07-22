@@ -11,7 +11,7 @@ var Post     = require('../models/Post');
 // get을 라우터(길 안내자)로 생각하자
 router.get('/', function(req,res) {
   var page = Math.max(1, req.query.page);
-  var limit = 10;
+  var limit = 1;
   Post.count({},function(err,count) {
     if(err) return res.json({success:false, message:err});
     var skip = (page-1)*limit;
