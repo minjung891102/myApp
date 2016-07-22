@@ -1,22 +1,11 @@
-// import modules -----------------------------------------------------------------------------------
+// import modules
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require('mongoose');
 var Post     = require('../models/Post');
 
-
-
-// set posts routes -----------------------------------------------------------------------------------
-// get 방식
-// get을 라우터(길 안내자)로 생각하자
+// set posts routes
 router.get('/', function(req,res) {
-  var page = Math.max(1, req.query.page);
-  var limit = 1;
-  Post.count({},function(err,count) {
-    if(err) return res.json({success:false, message:err});
-    var skip = (page-1)*limit;
-    var maxPage = Math.ceil(count/limit);
-  });
  Post.find({}).populate("author").sort('-createdAt').exec(function (err,post) {
    if(err) return res.json({success:false, message:err});
    res.render("posts/index", {post:post, user:req.user, postsMessage:req.flash("postsMessage")[0]});
@@ -35,7 +24,7 @@ router.post('/', isLoggedIn, function(req,res) {
 router.get('/:id', function(req,res) {
  Post.findById(req.params.id).populate("author").exec(function (err,post) {
    if(err) return res.json({success:false, message:err});
-   res.render("posts/show", {post:post, page:req.query.page, user:req.user});
+   res.render("posts/show", {post:post, user:req.user});
  });
 }); // show
 router.get('/:id/edit', isLoggedIn, function(req,res) {
@@ -61,9 +50,7 @@ router.delete('/:id', function(req,res) {
   });
 }); //destroy
 
-
-
-//functions -----------------------------------------------------------------------------------
+//functions
 function isLoggedIn(req,res,next) {
   //req.isAuthenticated()를 사용해서 현재 로그인이 되어 있는 상태인지 아닌지를 알려주는 함수로, passport에 의해 제공
   //로그인이 되어 있으면 다음 함수로 진행하고, 안되어 있으면 시작화면으로 보냅니다.
