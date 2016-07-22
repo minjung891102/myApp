@@ -41,7 +41,7 @@
           </thead>
           <tbody>
             <% post.forEach(function(post){ %>
-              <tr onclick="window.location = '/posts/<%= post._id %>?page=<%= page %>'">
+              <tr onclick="window.location = '/posts/<%= post._id %>?<%= urlQuery %>'">
                 <td><%= post.title %></td>
                 <td><%= post.createdAt.toLocaleDateString() %></td>
                 <td><%= post.author.nickname %></td>
@@ -50,11 +50,15 @@
           </tbody>
         </table>
         <ul class="pagination">
-          <% var offset = 3; %>
+          <%
+            var offset = 3;
+            var partialQuery;
+            if(urlQuery) partialQuery = "&" + urlQuery.replace(/page=(.*?)(&|$)/ig,"");
+          %>
           <% for(i=1; i<=maxPage; i++) { %>
             <% if(i<=offset || i>maxPage-offset || (i>=page-(offset-1)&&i<=page+(offset-1))) { %>
               <% if(i!=page) { %>
-                <li>[<a href="/posts?page=<%= i %>"><%= i%></a>]</li>
+                <li>[<a href="/posts?<%= partialQuery %>"><%= i%></a>]</li>
               <% } else { %>
                 <li>[<b><%= i %></b>]</li>
               <% } %>
