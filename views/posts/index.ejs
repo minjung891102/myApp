@@ -49,21 +49,6 @@
             <% }) %>
           </tbody>
         </table>
-
-        <ul class="pagination">
-    <% var offset = 3; %>
-    <% for(i=1;i<=maxPage;i++){ %>
-      <% if(i<=offset || i>maxPage-offset || (i>=page-(offset-1) && i<=page+(offset-1))){ %>
-        <% if(i != page){ %>
-          <li>[<a href="/posts?page=<%= i %>"> <%= i %> </a>]</li>
-        <% } else { %>
-          <li>[ <b><%= i %></b> ]</li>
-        <% } %>
-      <% } else if(i == offset+1 || i == maxPage-offset){ %>
-          <li>...</li>
-      <% } %>
-    <%}%>
-  </ul>
       </div>
 
     <!-- main end -->
