@@ -1,8 +1,10 @@
-// import modules
+// import modules -----------------------------------------------------------------------------------
 var mongoose  = require('mongoose');
 var bcrypt    = require("bcrypt-nodejs");
 
-// model setting
+
+
+// model setting -----------------------------------------------------------------------------------
 var userSchema = mongoose.Schema({
   email : {type:String, require:true, unique:true},
   nickname : {type:String, require:true, unique:true},

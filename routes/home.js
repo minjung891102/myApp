@@ -1,10 +1,12 @@
-// import modules
+// import modules -----------------------------------------------------------------------------------
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require('mongoose');
 var passport = require('../config/passport.js');
 
-//set home routes
+
+
+//set home routes -----------------------------------------------------------------------------------
 router.get('/', function(req,res) {
   res.redirect('/posts');
 });

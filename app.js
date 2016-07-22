@@ -1,4 +1,4 @@
-// import modules
+// import modules -----------------------------------------------------------------------------------
 var express        = require('express');
 var app            = express();
 var path           = require('path');
@@ -8,7 +8,9 @@ var flash          = require('connect-flash');
 var bodyParser     = require('body-parser');
 var methodOverride = require('method-override');
 
-// database
+
+
+// database -----------------------------------------------------------------------------------
 mongoose.connect(process.env.MONGOOSE_DB);
 var db = mongoose.connection;
 db.once("open", function (){
@@ -18,13 +20,21 @@ db.on("error", function (error) {
   console.log("DB ERROR : ", err);
 });
 
-// view engine
+
+
+// view engine -----------------------------------------------------------------------------------
 app.set("view engine", 'ejs');
 
-// middlewares
+
+
+// middlewares -----------------------------------------------------------------------------------
 app.use(express.static(path.join(__dirname, 'public')));
-app.use(bodyParser.json()); //다른프로그램 -> json 으로 데이타전송 할 경우 받는 body parser
-app.use(bodyParser.urlencoded({extended:true})); //웹사이트 -> json 으로 데이타전송 할 경우 받는 body parser
+// use라는 api를 사용하여 express의 정적서비스를 app.js에서 사용할 수 있도록 연결시키자.
+// public 디렉토리 안의 정적인 파일들을 직접적으로 사용할 수 있게 하는 코드
+app.use(bodyParser.json());
+//다른프로그램 -> json 으로 데이타전송 할 경우 받는 body parser
+app.use(bodyParser.urlencoded({extended:true}));
+//웹사이트 -> json 으로 데이타전송 할 경우 받는 body parser
 app.use(methodOverride("_method"));
 app.use(flash());
 app.use(session({
@@ -33,17 +43,23 @@ app.use(session({
   saveUninitialized: true
 }));
 
-// passport
+
+
+// passport -----------------------------------------------------------------------------------
 var passport = require('./config/passport');
 app.use(passport.initialize());
 app.use(passport.session());
 
-// routes
+
+
+// routes -----------------------------------------------------------------------------------
 app.use('/', require('./routes/home'));
 app.use('/users', require('./routes/users'));
 app.use('/posts', require('./routes/posts'));
 
-// start server
+
+
+// start server -----------------------------------------------------------------------------------
 var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log('Server On!');

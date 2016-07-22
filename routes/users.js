@@ -1,4 +1,4 @@
-// import modules
+// import modules -----------------------------------------------------------------------------------
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require('mongoose');
@@ -71,7 +71,9 @@ router.put('/:id', isLoggedIn, checkUserRegValidation, function(req,res) {
   });
 }); //update
 
-//functions
+
+
+//functions -----------------------------------------------------------------------------------
 function isLoggedIn(req,res,next) {
   //req.isAuthenticated()를 사용해서 현재 로그인이 되어 있는 상태인지 아닌지를 알려주는 함수로, passport에 의해 제공
   //로그인이 되어 있으면 다음 함수로 진행하고, 안되어 있으면 시작화면으로 보냅니다.
