@@ -10,14 +10,9 @@ var Post     = require('../models/Post');
 // get 방식
 // get을 라우터(길 안내자)로 생각하자
 router.get('/', function(req,res) {
-  var Counter = require('../models/Counter');
-  var visitorCounter = null;
-  Counter.findOne({name:'visitors'}, function(err, counter) {
-    if(!err) visitorCounter = counter;
-  });
-
-  var page = Math.max(1, req.query.page)>1 ? parseInt(req.query.page) : 1;
-  var limit = Math.max(1, req.query.limit)>1 ? parseInt(req.query.limit) : 10;
+  var vistorCounter = null;
+  var page = Math.max(1,req.query.page)>1?parseInt(req.query.page):1;
+  var limit = Math.max(1,req.query.limit)>1?parseInt(req.query.limit):10;
 
   async.waterfall([function(callback){
       Counter.findOne({name:"vistors"}, function (err,counter) {
