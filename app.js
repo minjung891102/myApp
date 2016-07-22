@@ -6,6 +6,7 @@ var mongoose       = require('mongoose');
 var session        = require('express-session');
 var flash          = require('connect-flash');
 var bodyParser     = require('body-parser');
+var cookieParser   = require('cookie-parser');
 var methodOverride = require('method-override');
 
 
@@ -35,6 +36,7 @@ app.use(bodyParser.json());
 //다른프로그램 -> json 으로 데이타전송 할 경우 받는 body parser
 app.use(bodyParser.urlencoded({extended:true}));
 //웹사이트 -> json 으로 데이타전송 할 경우 받는 body parser
+app.use(cookieParser());
 app.use(methodOverride("_method"));
 app.use(flash());
 app.use(session({
@@ -42,6 +44,7 @@ app.use(session({
   resave: true,
   saveUninitialized: true
 }));
+app.use(countVisitors);
 
 
 
@@ -64,3 +67,34 @@ var port = process.env.PORT || 3000;
 app.listen(port, function() {
   console.log('Server On!');
 });
+
+
+
+function countVisitors(req, res, next) {
+  if(!req.cookies.count && req.cookies['connect.sid']) {
+    res.cookie('count',"", {maxAge:3600000, httpOnly:true});
+    var now = new Date();
+    var date = now.getFullYear() + "/" + now.getMonth + "/" + now.getDate();
+    if(date != req.cookies.coountDate) {
+      res.cookie('countDate', date, {maxAge:86400000, httpOnly:true});
+
+      var Counter = require('./model/Coounter');
+      Couonter.findOne({name:"visitors"}, function(err,coounter) {
+        if(err) return next();
+        if(counter===null) {
+          Counter.create({name:"visitors", totalCount:1, todayCount:1, date:date});
+        } else {
+          counter.totalCount++;
+          if(counter.date == date) {
+            counter.todayCount++;
+          } else {
+            counter.todayCount = 1;
+            counter.date = date;
+          }
+          counter.save();
+        }
+      });
+    }
+  }
+  return next();
+}
