@@ -10,6 +10,12 @@ var Post     = require('../models/Post');
 // get 방식
 // get을 라우터(길 안내자)로 생각하자
 router.get('/', function(req,res) {
+  var Counter = require('../models/Counter');
+  var visitorCounter = null;
+  Counter.findOne({name:'visitors'}, function(err, counter) {
+    if(!err) visitorCounter = counter;
+  });
+
   var page = Math.max(1, req.query.page);
   var limit = 3;
   Post.count({},function(err,count){
@@ -18,7 +24,7 @@ router.get('/', function(req,res) {
    var maxPage = Math.ceil(count/limit);
    Post.find({}).populate("author").sort('-createdAt').skip(skip).limit(limit).exec(function (err,post) {
      if(err) return res.json({success:false, message:err});
-     res.render("posts/index", {post:post, user:req.user, page:page, maxPage:maxPage, postsMessage:req.flash("postsMessage")[0]});
+     res.render("posts/index", {post:post, user:req.user, page:page, maxPage:maxPage, counter:visitorCounter, postsMessage:req.flash("postsMessage")[0]});
    });
  });
 }); // index
