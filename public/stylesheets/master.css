@@ -1,3 +1,6 @@
+div {
+  clear: both;
+}
 body{
   color:#0C2E2B;
   font-family: 'Open Sans', sans-serif;
@@ -14,10 +17,11 @@ a:hover{
   text-decoration:underline;
 }
 ul{
+  text-align: center;
   list-style-type: none;
   padding:0;
 }
-li {
+ul li.pagination {
   float: left;
 }
 h1{
