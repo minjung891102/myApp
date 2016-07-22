@@ -41,7 +41,7 @@
           </thead>
           <tbody>
             <% post.forEach(function(post){ %>
-              <tr onclick="window.location = '/posts/<%= post._id %>?page=<%= page %>'">
+              <tr onclick="window.location = '/posts/<%= post._id %>'">
                 <td><%= post.title %></td>
                 <td><%= post.createdAt.toLocaleDateString() %></td>
                 <td><%= post.author.nickname %></td>
