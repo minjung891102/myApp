@@ -1,15 +1,19 @@
-// import modules
+// import modules -----------------------------------------------------------------------------------
 var express  = require('express');
 var router   = express.Router();
 var mongoose = require('mongoose');
 var Post     = require('../models/Post');
 
-// set posts routes
+
+
+// set posts routes -----------------------------------------------------------------------------------
+// get 방식
+// get을 라우터(길 안내자)로 생각하자
 router.get('/', function(req,res) {
- Post.find({}).populate("author").sort('-createdAt').exec(function (err,post) {
-   if(err) return res.json({success:false, message:err});
-   res.render("posts/index", {post:post, user:req.user, postsMessage:req.flash("postsMessage")[0]});
- });
+  Post.find({}).populate("author").sort('-createdAt').exec(function (err,post) {
+    if(err) return res.json({success:false, message:err});
+    res.render("posts/index", {post:post, user:req.user, postsMessage:req.flash("postsMessage")[0]});
+  });
 }); // index
 router.get('/new', isLoggedIn, function(req,res) {
   res.render("posts/new", {user:req.user});
@@ -50,7 +54,9 @@ router.delete('/:id', function(req,res) {
   });
 }); //destroy
 
-//functions
+
+
+//functions -----------------------------------------------------------------------------------
 function isLoggedIn(req,res,next) {
   //req.isAuthenticated()를 사용해서 현재 로그인이 되어 있는 상태인지 아닌지를 알려주는 함수로, passport에 의해 제공
   //로그인이 되어 있으면 다음 함수로 진행하고, 안되어 있으면 시작화면으로 보냅니다.
