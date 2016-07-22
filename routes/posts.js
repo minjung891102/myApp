@@ -34,7 +34,7 @@ router.get('/', function(req,res) {
        if(err) callback(err);
        return res.render("posts/index", {
          post:post, user:req.user, page:page, maxPage:maxPage,
-         urlQuery:req._parseUrl.query,
+         urlQuery:req._parsedUrl.query,
          //req._parseUrl.query를 사용해서 전체 url query를 전달해 줍니다.
          //req._parseUrl.query에 전체 url query가 저장되어 있는지는 console.log(req)해 보시면 이 안에 뭐가 들어 있는지 전체를 볼 수 있습니다.
          counter:visitorCounter, postsMessage:req.flash("postsMessage")[0]
@@ -57,7 +57,7 @@ router.post('/', isLoggedIn, function(req,res) {
 router.get('/:id', function(req,res) {
  Post.findById(req.params.id).populate("author").exec(function (err,post) {
    if(err) return res.json({success:false, message:err});
-   res.render("posts/show", {post:post, urlQuery:req._parseUrl.query, user:req.user});
+   res.render("posts/show", {post:post, urlQuery:req._parsedUrl.query, user:req.user});
  });
 }); // show
 router.get('/:id/edit', isLoggedIn, function(req,res) {
