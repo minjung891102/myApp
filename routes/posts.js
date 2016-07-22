@@ -10,9 +10,16 @@ var Post     = require('../models/Post');
 // get 방식
 // get을 라우터(길 안내자)로 생각하자
 router.get('/', function(req,res) {
-  Post.find({}).populate("author").sort('-createdAt').exec(function (err,post) {
-    if(err) return res.json({success:false, message:err});
-    res.render("posts/index", {post:post, user:req.user, postsMessage:req.flash("postsMessage")[0]});
+  var page = Math.max(1,req.query.page);
+  var limit = 1;
+  Post.count({},function(err,count){
+   if(err) return res.json({success:false, message:err});
+   var skip = (page-1)*limit;
+   var maxPage = Math.ceil(count/limit);
+   Post.find().populate("author").sort('-createdAt').skip(skip).limit(limit).exec(function (err,posts) {
+     if(err) return res.json({success:false, message:err});
+     res.render("posts/index",{posts:posts, user:req.user, page:page, maxPage:maxPage, postsMessage:req.flash("postsMessage")[0]});
+   });
   });
 }); // index
 router.get('/new', isLoggedIn, function(req,res) {
