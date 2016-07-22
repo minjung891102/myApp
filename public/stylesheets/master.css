@@ -1,6 +1,3 @@
-div {
-  clear: both;
-}
 body{
   color:#0C2E2B;
   font-family: 'Open Sans', sans-serif;
@@ -22,7 +19,9 @@ ul{
   padding:0;
 }
 ul.pagination li {
-  float: left;
+  display: inline-block;
+  *display: inline;
+  *zoom: 1;
 }
 h1{
   color:tomato;
