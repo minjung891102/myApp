@@ -19,33 +19,31 @@ router.get('/', function(req,res) {
   var page = Math.max(1, req.query.page)>1 ? parseInt(req.query.page) : 1;
   var limit = Math.max(1, req.query.limit)>1 ? parseInt(req.query.limit) : 10;
 
-  async.waterfall([ function(callback) {
-    Counter.findOne({name:"visitors"}, function(err,counter) {
-      if(err) callback(err);
-      visitorCounter = counter;
-      callback(null);
+  async.waterfall([function(callback){
+      Counter.findOne({name:"vistors"}, function (err,counter) {
+        if(err) callback(err);
+        vistorCounter = counter;
+        callback(null);
+      });
+    },function(callback){
+      Post.count({},function(err,count){
+        if(err) callback(err);
+        skip = (page-1)*limit;
+        maxPage = Math.ceil(count/limit);
+        callback(null, skip, maxPage);
+      });
+    },function(skip, maxPage, callback){
+      Post.find({}).populate("author").sort('-createdAt').skip(skip).limit(limit).exec(function (err,posts) {
+        if(err) callback(err);
+        return res.render("posts/index",{
+          posts:posts, user:req.user, page:page, maxPage:maxPage,
+          urlQuery:req._parsedUrl.query,
+          counter:vistorCounter, postsMessage:req.flash("postsMessage")[0]
+        });
+      });
+    }],function(err){
+      if(err) return res.json({success:false, message:err});
     });
-  }, function(callback) {
-    Post.count({}, function(err, count) {
-      if(err) callback(err);
-      skip = (page-1)*limit;
-      maxPage = Math.ceil(count/limit);
-      callback(null, skip, maxPage);
-    });
-  }, function(skip, maxPage, callback) {
-     Post.find({}).populate("author").sort('-createdAt').skip(skip).limit(limit).exec(function (err,post) {
-       if(err) callback(err);
-       return res.render("posts/index", {
-         post:post, user:req.user, page:page, maxPage:maxPage,
-         urlQuery:req._parsedUrl.query,
-         //req._parseUrl.query를 사용해서 전체 url query를 전달해 줍니다.
-         //req._parseUrl.query에 전체 url query가 저장되어 있는지는 console.log(req)해 보시면 이 안에 뭐가 들어 있는지 전체를 볼 수 있습니다.
-         counter:visitorCounter, postsMessage:req.flash("postsMessage")[0]
-       });
-     });
-   }], function(err) {
-     if(err) return res.json({success:false, message:err});
-  });
 }); // index
 router.get('/new', isLoggedIn, function(req,res) {
   res.render("posts/new", {user:req.user});
