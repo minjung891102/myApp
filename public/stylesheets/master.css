@@ -17,6 +17,9 @@ ul{
   list-style-type: none;
   padding:0;
 }
+li {
+  float: left;
+}
 h1{
   color:tomato;
   text-align:center;
